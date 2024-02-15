@@ -58,9 +58,9 @@
             <Button Content="Aufnahme Konfiguration" Grid.Column="2" Margin="5,51,5,-41" Click="btnAufnahemConfig_Click"/>
 
         </Grid>
-        <Grid>
-            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" />
-
+        <Grid Grid.Row="9">
+            <!-- Position des Frames geändert -->
+            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Grid.Row="9"/>
         </Grid>
 
 

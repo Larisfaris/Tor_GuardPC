@@ -11,16 +11,7 @@ using System.Runtime.Intrinsics.X86;
 using System.IO;
 using System.Text.Json;
 using System.Xml.Linq;
-
-
-
-
-
-
-
-// Test Email MentkenL061@sus-am-bktm.de
-
-//Bei Mail.de
+using System.Reflection.Metadata;
 
 //Login Benutzername: Tor_Guard@web.de
 //Login Passwort:TorGuard
@@ -45,6 +36,8 @@ namespace TorGuard
     {
         // Liste zum Speichern der E-Mail-Adressen
         private List<string> emailAddresses = new List<string>();
+      
+
 
         public MainWindow()
         {
@@ -52,24 +45,9 @@ namespace TorGuard
             string benutzername = "Tor.Guard";
             string passwort = "Tor.Guard";
 
-            //HC_Speicherpfade speicherpfade = new HC_Speicherpfade(
-            //        //@"\\raspberrypi\TorGuard_Konfig\Documents\tore\", //speicherpfadTor,
-            //        //@"\\raspberrypi\TorGuard_Konfig\Documents\konfig\", //speicherpfadKonfig,
-            //        @"\\192.168.1.4\TorGuard_Konfig\Documents\tore\", //speicherpfadTor,
-            //        @"\\192.168.1.4\TorGuard_Konfig\Documents\konfig\", //speicherpfadKonfig,
-            //        "Tor_config.json",//speichernameTorKonfig,
-            //        "Netzwerk_config.json",//speichernameNetzwerkKonfig,
-            //        "Empfängerlist_config.json",//speichernameEmailKonfig,
-            //        "AufnahmeKonfig.json"//speichernameAufnahmeKonfig
-            //    );
+          
 
-            HC_Speicherpfade speicherpfade = new HC_Speicherpfade();
-            speicherpfade.Speicherpfad_tor = @"\\192.168.1.4\TorGuard_Konfig\Documents\tore\";
-            speicherpfade.Speicherpfad_Konfig = @"\\192.168.1.4\TorGuard_Konfig\Documents\konfig\";
-            speicherpfade.Speichername_Torkonfig = "Tor_config.json";
-            speicherpfade.Speichername_Netzwerkkonfig = "Netzwerk_config.json";
-            speicherpfade.Speichername_Emailkonfig = "Empfängerlist_config.json";
-            speicherpfade.Speichername_Aufnahemekonfig = "AufnahmeKonfig.json";
+            LoadConfigurationFromFile_Mail();
         }
 
 
@@ -219,12 +197,11 @@ namespace TorGuard
 
                 // Instanz von RaspberryZugriff erstellen
                 RaspberryZugriff raspZugriff = new RaspberryZugriff();
-
                 // Pfad und Dateiname holen
-                HC_Speicherpfade speicherpfade = new HC_Speicherpfade();
+                //HC_Speicherpfade speicherpfade = new HC_Speicherpfade();
 
-                string dateiPfad = speicherpfade.Speicherpfad_Konfig; // Annahme, dass dies der richtige Pfad ist
-                string dateiName = speicherpfade.Speichername_Emailkonfig;
+                string dateiPfad = HC_Speicherpfade.Instance.Speicherpfad_Konfig; // Annahme, dass dies der richtige Pfad ist
+                string dateiName = HC_Speicherpfade.Instance.Speichername_Emailkonfig;
 
                 // Speichere auf dem Server
                 raspZugriff.SpeichereDateiAufServer(configData_Email, dateiPfad, dateiName);
@@ -241,35 +218,64 @@ namespace TorGuard
         {
 
 
-            MessageBox.Show("Die Anwendung wurde geöffnet und initialisiert.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+           // MessageBox.Show("Die Anwendung wurde geöffnet und initialisiert.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
             try
             {
                 // Erstellen einer Instanz von RaspberryZugriff
                 RaspberryZugriff raspZugriff = new RaspberryZugriff();
 
                 // Pfadinformationen aus der Speicherpfade-Klasse
-                HC_Speicherpfade speicherpfade = new HC_Speicherpfade(/* Konstruktorparameter */);
-                string dateiPfad = speicherpfade.Speicherpfad_Konfig;
-                string dateiName = speicherpfade.Speichername_Aufnahemekonfig;
-
-                // Laden der Konfiguration vom Server
-                var configData = raspZugriff.LadeDateiVomServer<dynamic>(dateiPfad, dateiName);
-
-                if (configData != null)
+                
+                string dateiPfad = HC_Speicherpfade.Instance.Speicherpfad_Konfig;
+                string dateiName = HC_Speicherpfade.Instance.Speichername_Emailkonfig;
+                // Überprüfen, ob die Werte nicht null sind
+                if (dateiPfad != null && dateiName != null)
                 {
 
-                    emailAddresses = ((JsonElement)configData?.EmailAddresses).EnumerateArray().Select(email => email.GetString()).ToList();
+                    // Laden der Konfiguration vom Server
+                    var configData = raspZugriff.LadeDateiVomServer<dynamic>(dateiPfad, dateiName);
 
-                    txtsEmail.Text = configData?.SMTP?.Email;
-                    txtEmailpassword.Password = configData?.SMTP?.Password;
-                    txtsmtpadre.Text = configData?.SMTP?.Address;
-                    txtSmtpNr.Text = configData?.SMTP?.Port;
+                    
+                    if (configData.TryGetProperty("SMTP", out JsonElement smtpElement))
+                    {
+                        // Zugriff auf die SMTP-Eigenschaften
+
+                        if (configData.TryGetProperty("EmailAddresses", out JsonElement emailAddressesElement))
+                        {
+                            emailAddresses = emailAddressesElement.EnumerateArray().Select(email => email.GetString()).ToList();
+                        }
+                        if (smtpElement.TryGetProperty("Email", out JsonElement emailElement))
+                        {
+                            txtsEmail.Text = emailElement.GetString();
+                        }
+
+                        if (smtpElement.TryGetProperty("Password", out JsonElement passwordElement))
+                        {
+                            txtEmailpassword.Password = passwordElement.GetString();
+                        }
+
+                        if (smtpElement.TryGetProperty("Address", out JsonElement addressElement))
+                        {
+                            txtsmtpadre.Text = addressElement.GetString();
+                        }
+
+                        if (smtpElement.TryGetProperty("Port", out JsonElement portElement))
+                        {
+                            txtSmtpNr.Text = portElement.GetString();
+                        }
+                    }
+                    //emailAddresses = ((JsonElement)configData.EmailAddresses).EnumerateArray().Select(email => email.GetString()).ToList();
+
+                    //txtsEmail.Text = configData?.SMTP?.Email;
+                    //    txtEmailpassword.Password = configData?.SMTP?.Password;
+                    //    txtsmtpadre.Text = configData?.SMTP?.Address;
+                    //    txtSmtpNr.Text = configData?.SMTP?.Port;
 
                     RefreshEmailList();
 
 
+                   
                 }
-
             }
             catch (Exception ex)
             {

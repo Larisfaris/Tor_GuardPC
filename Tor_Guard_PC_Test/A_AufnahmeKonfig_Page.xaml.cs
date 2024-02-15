@@ -18,22 +18,51 @@ namespace TorGuard
         {
             InitializeComponent();
             LoadConfiguration();
-
         }
 
         public void LoadConfiguration()
         {
             try
             {
-                // Zugriff auf die Singleton-Instanz
-                var konfig = HC_AufnahmeKonfig.Instance;
+                RaspberryZugriff raspZugriff = new RaspberryZugriff();
+                string dateiPfad = HC_Speicherpfade.Instance.Speicherpfad_Konfig;
+                string dateiName = HC_Speicherpfade.Instance.Speichername_Aufnahemekonfig;
 
-               
+                // Laden der Konfigurationsdatei als JsonDocument
+                var configContent = raspZugriff.LadeDateiVomServer<string>(dateiPfad, dateiName);
+                if (configContent == null)
+                {
+                    MessageBox.Show("Konfigurationsdatei konnte nicht geladen werden.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
 
-                // Aktualisieren der UI-Elemente mit den Werten aus der Konfiguration
-                txtStundenProDatei.Text = konfig.StundenProDatei.ToString();
-                txtBackupDays.Text = konfig.BackupDays.ToString();
-                txtSpeicherIntervallMinute.Text = konfig.AktualisierungServerDatei.ToString();
+                JsonDocument doc;
+                try
+                {
+                    doc = JsonDocument.Parse(configContent);
+                }
+                catch (JsonException je)
+                {
+                    MessageBox.Show($"Fehler beim Parsen der Konfigurationsdatei: {je.Message}", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                JsonElement root = doc.RootElement;
+
+                if (root.TryGetProperty("StundenProDatei", out JsonElement stundenProDateiElement))
+                {
+                    txtStundenProDatei.Text = stundenProDateiElement.ToString();
+                }
+
+                if (root.TryGetProperty("BackupDays", out JsonElement backupDaysElement))
+                {
+                    txtBackupDays.Text = backupDaysElement.ToString();
+                }
+
+                if (root.TryGetProperty("AktualisierungServerDatei", out JsonElement aktualisierungServerDateiElement))
+                {
+                    txtSpeicherIntervallMinute.Text = aktualisierungServerDateiElement.ToString();
+                }
             }
             catch (Exception ex)
             {
@@ -41,31 +70,39 @@ namespace TorGuard
             }
         }
 
+
         public void SaveConfiguration_Aufnahme()
         {
             try
             {
-                // Zugriff auf die Singleton-Instanz
-                var konfig = HC_AufnahmeKonfig.Instance;
+                //// Zugriff auf die Singleton-Instanz
+                //var konfig = HC_AufnahmeKonfig.Instance;
+                //// Speichere auf dem Server
+                //RaspberryZugriff raspZugriff = new RaspberryZugriff();
+                //raspZugriff.SpeichereDateiAufServer(configData_Email, dateiPfad, dateiName);
+                //// Aktualisieren der Konfigurationswerte basierend auf den UI-Elementen
 
-                // Aktualisieren der Konfigurationswerte basierend auf den UI-Elementen
-                konfig.StundenProDatei = double.Parse(txtStundenProDatei.Text);
-                konfig.BackupDays = double.Parse(txtBackupDays.Text);
-                konfig.AktualisierungServerDatei = double.Parse(txtSpeicherIntervallMinute.Text);
+                var configData_Aufnahme = new
+                {
+                    StundenProDatei = double.Parse(txtStundenProDatei.Text),
+                        BackupDays = double.Parse(txtBackupDays.Text),
+                        AktualisierungServerDatei = double.Parse(txtSpeicherIntervallMinute.Text)
 
-                // Erstellen der JSON-Repräsentation der Konfiguration
-                string json = JsonSerializer.Serialize(konfig, new JsonSerializerOptions { WriteIndented = true });
+                };
+
+                //// Erstellen der JSON-Repräsentation der Konfiguration
+                //string json = JsonSerializer.Serialize(konfig, new JsonSerializerOptions { WriteIndented = true });
 
                 // Erstellen einer Instanz von RaspberryZugriff
                 RaspberryZugriff raspZugriff = new RaspberryZugriff();
 
-                // Pfad und Dateiname definieren
-                HC_Speicherpfade speicherpfade = new HC_Speicherpfade(); // Stellen Sie sicher, dass Speicherpfade korrekt initialisiert werden
-                string dateiPfad = speicherpfade.Speicherpfad_Konfig; // Verwenden Sie den korrekten Speicherpfad
-                string dateiName = "AufnahmeKonfig.json"; // Verwenden Sie den korrekten Dateinamen
+                //// Pfad und Dateiname definieren
+
+                string dateiPfad = HC_Speicherpfade.Instance.Speicherpfad_Konfig; // Verwenden Sie den korrekten Speicherpfad
+                string dateiName = HC_Speicherpfade.Instance.Speichername_Aufnahemekonfig; // Verwenden Sie den korrekten Dateinamen
 
                 // Speichern der Konfiguration auf dem Server
-                raspZugriff.SpeichereDateiAufServer(json, dateiPfad, dateiName);
+                raspZugriff.SpeichereDateiAufServer(configData_Aufnahme, dateiPfad, dateiName);
 
                 MessageBox.Show("Konfiguration gespeichert.", "Erfolg", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -83,19 +120,22 @@ namespace TorGuard
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            
-                // Überprüft, ob es möglich ist, im Navigationsverlauf zurückzugehen
+
+
+            //this.NavigationService.GoBack();
+
+            //Überprüft, ob es möglich ist, im Navigationsverlauf zurückzugehen
                 if (this.NavigationService.CanGoBack)
-                {
-                    this.NavigationService.GoBack();
-                }
-                else
-                {
-                    // Wenn nicht zurückgegangen werden kann, navigieren Sie ggf. zu einer spezifischen Page
-                    // Oder setzen Sie den Frame-Inhalt auf null, um zum Hauptinhalt zurückzukehren
-                     //MainFrame.Content = null; // Annahme, dass 'MainFrame' der Name Ihres Hauptframes ist
-                }
-           
+            {
+                this.NavigationService.GoBack();
+            }
+            else
+            {
+                // Wenn nicht zurückgegangen werden kann, navigieren Sie ggf. zu einer spezifischen Page
+                // Oder setzen Sie den Frame-Inhalt auf null, um zum Hauptinhalt zurückzukehren
+                //MainFrame.Content = null; // Annahme, dass 'MainFrame' der Name Ihres Hauptframes ist
+            }
+
         }
     }
 }

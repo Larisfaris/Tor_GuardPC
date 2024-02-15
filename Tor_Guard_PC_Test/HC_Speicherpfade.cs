@@ -15,12 +15,33 @@ namespace TorGuard
         public string Speichername_Emailkonfig { get; set; }
         public string Speichername_Aufnahemekonfig { get; set; }
 
+        private static readonly HC_Speicherpfade instance = new HC_Speicherpfade();
         public HC_Speicherpfade()
         {
+            //HC_Speicherpfade speicherpfade = new HC_Speicherpfade(
+            //        //@"\\raspberrypi\TorGuard_Konfig\Documents\tore\", //speicherpfadTor,
+            //        //@"\\raspberrypi\TorGuard_Konfig\Documents\konfig\", //speicherpfadKonfig,
+            
+            Speicherpfad_tor = @"\\192.168.1.4\TorGuard_Konfig\Documents\tore";
+            Speicherpfad_Konfig = @"\\192.168.1.4\TorGuard_Konfig\Documents\konfig";
+            Speichername_Torkonfig = "Tor_config.json";
+            Speichername_Netzwerkkonfig = "Netzwerk_config.json";
+            Speichername_Emailkonfig = "Empfängerlist_config.json";
+            Speichername_Aufnahemekonfig = "AufnahmeKonfig.json";
+
+            //Speicherpfad_tor = speicherpfad_tor;
+            //Speicherpfad_Konfig = speicherpfad_Konfig;
+            //Speichername_Torkonfig = speichername_Torkonfig;
+            //Speichername_Netzwerkkonfig = speichername_Netzwerkkonfig;
+            //Speichername_Emailkonfig = speichername_Emailkonfig;
+            //Speichername_Aufnahemekonfig = speichername_Aufnahemekonfig;
+
+
 
         }
+        public static HC_Speicherpfade Instance => instance;
 
-        //Konstruktor von HC_Speicherpfade aktualisieren
+        ////Konstruktor von HC_Speicherpfade aktualisieren
         //public HC_Speicherpfade(string speicherpfad_tor, string speicherpfad_Konfig, string speichername_Torkonfig, string speichername_Netzwerkkonfig, string speichername_Emailkonfig, string speichername_Aufnahemekonfig)
         //{
         //    Speicherpfad_tor = speicherpfad_tor;
@@ -29,16 +50,16 @@ namespace TorGuard
         //    Speichername_Netzwerkkonfig = speichername_Netzwerkkonfig;
         //    Speichername_Emailkonfig = speichername_Emailkonfig;
         //    Speichername_Aufnahemekonfig = speichername_Aufnahemekonfig;
-        
 
 
-        //      Speicherpfad_tor = @"\\192.168.1.4\TorGuard_Konfig\Documents\tore\";
-        //Speicherpfad_Konfig = @"\\192.168.1.4\TorGuard_Konfig\Documents\konfig\";
-        //Speichername_Torkonfig = "Tor_config.json";
-        //Speichername_Netzwerkkonfig = "Netzwerk_config.json";
-        //Speichername_Emailkonfig = "Empfängerlist_config.json";
-        //Speichername_Aufnahemekonfig = "AufnahmeKonfig.json";
 
-        //}
+        //    //      Speicherpfad_tor = @"\\192.168.1.4\TorGuard_Konfig\Documents\tore\";
+        //    //Speicherpfad_Konfig = @"\\192.168.1.4\TorGuard_Konfig\Documents\konfig\";
+        //    //Speichername_Torkonfig = "Tor_config.json";
+        //    //Speichername_Netzwerkkonfig = "Netzwerk_config.json";
+        //    //Speichername_Emailkonfig = "Empfängerlist_config.json";
+        //    //Speichername_Aufnahemekonfig = "AufnahmeKonfig.json";
+
+        //    //}
     }
 }   

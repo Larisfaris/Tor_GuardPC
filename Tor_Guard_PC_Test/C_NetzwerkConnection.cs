@@ -48,13 +48,13 @@ namespace TorGuard
 
             // Versucht, eine Verbindung mit der Netzwerkfreigabe herzustellen
             var result = WNetAddConnection2(netResource, credentials.Password, credentials.UserName, 0);
-
+            Console.WriteLine(result);
             // Überprüft das Ergebnis des Verbindungsversuchs
             if (result != 0)
-            {
+            
                 // Wenn ein Fehler aufgetreten ist, wird eine Ausnahme geworfen
                 throw new Win32Exception(result, "Fehler beim Verbinden mit Netzwerkpfad");
-            }
+            
         }
 
         // Implementierung der Dispose-Methode, um die Netzwerkverbindung sicher zu trennen

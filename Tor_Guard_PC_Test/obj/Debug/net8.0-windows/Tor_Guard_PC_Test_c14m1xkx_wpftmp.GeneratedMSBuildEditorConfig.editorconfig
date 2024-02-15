@@ -1,0 +1,13 @@
+is_global = true
+build_property.TargetFramework = net8.0-windows
+build_property.TargetPlatformMinVersion = 7.0
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Tor_Guard_PC_Test_c14m1xkx_wpftmp
+build_property.ProjectDir = D:\Arduino_Programmieren\AA_Dev_TorGuard_Programme\Tor_Guard_PC_Test\Tor_Guard_PC_Test\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 

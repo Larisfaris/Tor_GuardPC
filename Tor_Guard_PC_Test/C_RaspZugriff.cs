@@ -25,7 +25,6 @@ namespace TorGuard
 
         public RaspberryZugriff()
         {        
-
         }
 
         //In der Konsole Tore Auflisten
@@ -71,7 +70,7 @@ namespace TorGuard
             try
             {   //using (var netzwerkVerbindung = new NetworkConnection(dateiPfad, new NetworkCredential("benutzername", "passwort")))
                 
-                    using (var netzwerkVerbindung = new NetworkConnection(vollerPfad, new NetworkCredential(benutzername, passwort)))
+                    using (var netzwerkVerbindung = new NetworkConnection(dateiPfad, new NetworkCredential(benutzername, passwort)))
                 {
                     if (File.Exists(vollerPfad))
                     {
@@ -99,6 +98,7 @@ namespace TorGuard
                     string json = JsonSerializer.Serialize(configData, new JsonSerializerOptions { WriteIndented = true });
                     string filePath = Path.Combine(dateiPfad, dateiName);
                     File.WriteAllText(filePath, json);
+                    MessageBox.Show($"alles gut bruder ", "", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)

@@ -5,6 +5,7 @@ using System.Text.Json;
 
 namespace TorGuard
 {
+   
     public class HC_AufnahmeKonfig
     {
         public double StundenProDatei { get; set; }
@@ -12,31 +13,33 @@ namespace TorGuard
         public double AktualisierungServerDatei { get; set; }
 
         // Singleton-Instanz
-        private static HC_AufnahmeKonfig instance;
+       // private static HC_AufnahmeKonfig instance;
 
         // Privater Konstruktor, um direkte Instanziierung zu verhindernA
-        private HC_AufnahmeKonfig() { }
+        private HC_AufnahmeKonfig() 
+        {
+
+        }
 
         // Öffentliche Methode zum Zugriff auf die Singleton-Instanz
-        public static HC_AufnahmeKonfig Instance
-        {
-            get
-            {   
+        //public static HC_AufnahmeKonfig Instance
+        //{
+        //    get
+        //    {   
                   
+                
+        //        if (instance == null)
+        //        {
+                
+                        
+        //                RaspberryZugriff raspZugriff = new RaspberryZugriff();
 
-                if (instance == null)
-                {
+        //                // Korrekter Aufruf mit Pfad und Dateiname
+        //                instance = raspZugriff.LadeDateiVomServer<HC_AufnahmeKonfig>(HC_Speicherpfade.Instance.Speicherpfad_Konfig, HC_Speicherpfade.Instance.Speichername_Aufnahemekonfig) ?? new HC_AufnahmeKonfig();
                     
-{
-                        HC_Speicherpfade speicherpfade = new HC_Speicherpfade();
-                        RaspberryZugriff raspZugriff = new RaspberryZugriff();
-
-                        // Korrekter Aufruf mit Pfad und Dateiname
-                        instance = raspZugriff.LadeDateiVomServer<HC_AufnahmeKonfig>(speicherpfade.Speicherpfad_Konfig, speicherpfade.Speichername_Aufnahemekonfig) ?? new HC_AufnahmeKonfig();
-                    }
-                }
-                return instance;
-            }
-        }
+        //        }
+        //        return instance;
+        //    }
+        //}
     }
 }

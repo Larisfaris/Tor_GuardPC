@@ -1,0 +1,64 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\Arduino Programmieren\\Tor_Guard_PC_Test\\Tor_Guard_PC_Test\\Tor_Guard_PC_Test.csproj": {}
+  },
+  "projects": {
+    "D:\\Arduino Programmieren\\Tor_Guard_PC_Test\\Tor_Guard_PC_Test\\Tor_Guard_PC_Test.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Arduino Programmieren\\Tor_Guard_PC_Test\\Tor_Guard_PC_Test\\Tor_Guard_PC_Test.csproj",
+        "projectName": "Tor_Guard_PC_Test",
+        "projectPath": "D:\\Arduino Programmieren\\Tor_Guard_PC_Test\\Tor_Guard_PC_Test\\Tor_Guard_PC_Test.csproj",
+        "packagesPath": "C:\\Users\\lemen\\.nuget\\packages\\",
+        "outputPath": "D:\\Arduino Programmieren\\Tor_Guard_PC_Test\\Tor_Guard_PC_Test\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\lemen\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0-windows"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0-windows7.0": {
+            "targetAlias": "net8.0-windows",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0-windows7.0": {
+          "targetAlias": "net8.0-windows",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WPF": {
+              "privateAssets": "none"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
